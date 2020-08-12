@@ -6,20 +6,44 @@ document.addEventListener('DOMContentLoaded', function() {
   const addBtn = document.querySelector('#addBtn')
 
   for(i = 0 ; i < eachLi.length ; i++){
-    eachLi[i].addEventListener('click', function(){
-    this.classList.toggle('checked')
-  })
+    eachLi[i].addEventListener('click', todoChecked)
   }
   
-  eachCloseBtn.forEach(btn => {
-    btn.addEventListener('click', function(){
-      this.parentNode.remove(btn.parentNode)
-    })
+  eachCloseBtn.forEach(closeBtn => {
+    closeBtn.addEventListener('click', deleteTodo)
   });
   
   eachLi.forEach(li => {
-    li.addEventListener('drag', function(e) {
-      let hoverTarget = document.elementFromPoint(e.clientX,e.clientY)
+    li.addEventListener('drag', dragAndExchange)
+    })
+
+  addBtn.addEventListener('click', addNewTodo)
+
+  function todoChecked() {
+    this.classList.toggle('checked')
+  }
+
+  function deleteTodo() {
+    this.parentNode.remove()
+  }
+
+  function addNewTodo() {
+      let newLi = document.createElement('li')
+      
+      newLi.setAttribute('draggable', 'true')
+      newLi.innerHTML = `${input.value}<span class="close">x</span>`
+      ul.appendChild(newLi)
+      input.value = ''
+      
+      let closeBtn = newLi.querySelector('.close')
+
+      newLi.addEventListener('click', todoChecked)
+      newLi.addEventListener('drag', dragAndExchange)
+      closeBtn.addEventListener('click', deleteTodo)
+}
+
+  function dragAndExchange(e) {
+    let hoverTarget = document.elementFromPoint(e.clientX,e.clientY)
       if (hoverTarget.hasAttribute('draggable') &&hoverTarget !== e.target) {
         console.log('change')
         if (hoverTarget.offsetTop < e.target.offsetTop){
@@ -28,25 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
           hoverTarget.insertAdjacentElement('afterend', e.target)
         }
       }
-    })
-    })
-
-  addBtn.addEventListener('click', function(){
-    let newLi = document.createElement('li')
-    newLi.setAttribute('draggable', 'true')
-    newLi.innerHTML = `${input.value}<span class="close">x</span>`
-    ul.appendChild(newLi)
-    input.value = ''
-    
-    let newClose = newLi.querySelector('.close')
-    newLi.addEventListener('click', function(){
-      this.classList.toggle('checked')
-    })
-    
-    newClose.addEventListener('click', function(){
-      this.parentNode.remove(newClose.parentNode)
-    })
-    
-  })  
+  }
 
 })
