@@ -4,11 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const eachCloseBtn = document.querySelectorAll('.close')
   const input = document.querySelector('#input')
   const addBtn = document.querySelector('#addBtn')
-  var drag = {
-    current: null,
-    yValue: 0,
-    place: 0
-  }
 
   for(i = 0 ; i < eachLi.length ; i++){
     eachLi[i].addEventListener('click', function(){
@@ -23,29 +18,18 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   eachLi.forEach(li => {
-    li.addEventListener('dragstart', function(drag){
-      drag.current = drag.target
-      
-      
-      console.log(this.offsetTop)
-      console.log(e.pageY)
-      console.log(this.clientHeight)
-    })
-
     li.addEventListener('drag', function(e) {
-      // this.hidden = true
-      console.log(ul.offsetTop)
-      console.log(e.pageY)
+      let hoverTarget = document.elementFromPoint(e.clientX,e.clientY)
+      if (hoverTarget.hasAttribute('draggable') &&hoverTarget !== e.target) {
+        console.log('change')
+        if (hoverTarget.offsetTop < e.target.offsetTop){
+          hoverTarget.insertAdjacentElement('beforebegin', e.target)
+        } else {
+          hoverTarget.insertAdjacentElement('afterend', e.target)
+        }
+      }
     })
-
-    li.addEventListener('dragend', function(e){
-      console.log('dragend')
-      // ul.removeChild(this)
-      let place = Math.floor((e.pageY - ul.offsetTop) / 40)
-      console.log(place)
-      
     })
-  });
 
   addBtn.addEventListener('click', function(){
     let newLi = document.createElement('li')
