@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const input = document.querySelector('#input')
   const addBtn = document.querySelector('#addBtn')
 
-  for(i = 0 ; i < eachLi.length ; i++){
-    eachLi[i].addEventListener('click', todoChecked)
-  }
-  
+  eachLi.forEach(li => {
+    li.addEventListener('click', todoChecked)
+  })
+
   eachCloseBtn.forEach(closeBtn => {
     closeBtn.addEventListener('click', deleteTodo)
-  });
+  })
   
   eachLi.forEach(li => {
     li.addEventListener('drag', dragAndExchange)
